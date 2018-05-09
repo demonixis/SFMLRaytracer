@@ -91,7 +91,7 @@ void Raytracer::PixelShader(const int &i, const int &j, Camera &camera, Hitable 
 	m_ColorBuffer[i + j * m_RenderWidth] = sf::Uint8(color.x * 255);
 	m_ColorBuffer[i + j * m_RenderWidth + 1] = sf::Uint8(color.y * 255);
 	m_ColorBuffer[i + j * m_RenderWidth + 2] = sf::Uint8(color.z * 255);
-	m_ColorBuffer[i + j * m_RenderWidth + 4] = 255;
+	m_ColorBuffer[i + j * m_RenderWidth + 3] = 255;
 }
 
 void Raytracer::Present(sf::RenderWindow &window)
