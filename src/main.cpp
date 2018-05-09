@@ -19,6 +19,8 @@ int main(int argc, char* argv[])
 	Camera camera;
 	HitableList list(world);
 
+	raytracer.StartThreading(camera, list);
+
 	while (window.isOpen())
 	{
 		sf::Event event;

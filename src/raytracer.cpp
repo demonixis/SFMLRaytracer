@@ -17,6 +17,37 @@ Raytracer::~Raytracer()
 	delete m_Backbuffer;
 	delete m_BackbufferSprite;
 	delete m_Stopwatch;
+
+	if (m_RenderThread != nullptr)
+	{
+		if (m_RenderThread->joinable())
+			m_RenderThread->join();
+
+		delete m_RenderThread;
+	}
+}
+
+void Raytracer::StartThreading(Camera &camera, Hitable &world)
+{
+	if (m_RenderThread != nullptr)
+	{
+		if (m_RenderThread->joinable())
+			m_RenderThread->join();
+
+		delete m_RenderThread;
+	}
+
+	m_RenderThread = new std::thread([&] {
+		m_ThreadIsRunning = true;
+
+		while (m_ThreadIsRunning)
+			Render(camera, world);
+	});
+}
+
+void Raytracer::StopThreading()
+{
+	m_ThreadIsRunning = false;
 }
 
 glm::vec3 Raytracer::GetColor(const Ray &ray, Hitable &world)

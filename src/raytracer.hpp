@@ -1,6 +1,7 @@
 #ifndef RAYTRACER_HPP
 #define RAYTRACER_HPP
 
+#include <thread>
 #include <SFML/Graphics.hpp>
 #include <glm.hpp>
 #include "hitable.hpp"
@@ -21,6 +22,8 @@ private:
 	int m_RenderHeight;
 	int m_Step;
 	sf::Uint32 m_LastFrameTime;
+	std::thread *m_RenderThread;
+	bool m_ThreadIsRunning;
 
 public:
 	sf::Uint32 LastFrameTime() { return m_LastFrameTime; }
@@ -32,6 +35,8 @@ public:
 public:
 	Raytracer(const int &width, const int &height, const float &scale);
 	~Raytracer();
+	void StartThreading(Camera &camera, Hitable &world);
+	void StopThreading();
 	void Render(Camera &camera, Hitable &world);
 	void Present(sf::RenderWindow &window);
 
