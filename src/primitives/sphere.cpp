@@ -1,10 +1,11 @@
 #include "sphere.hpp"
 
-Sphere::Sphere(const glm::vec3 &center, float &radius)
+Sphere::Sphere(const glm::vec3 &center, float &radius, Material *material)
 {
 	m_Center = center;
 	m_Radius = radius;
 	m_Radius2 = radius * radius;
+	m_Material = material;
 }
 
 Sphere::~Sphere()

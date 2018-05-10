@@ -18,11 +18,11 @@ private:
 	sf::Texture *m_Backbuffer;
 	sf::Uint8 *m_ColorBuffer;
 	sf::Clock *m_Stopwatch;
+	std::thread *m_RenderThread;
+	sf::Uint32 m_LastFrameTime;
 	int m_RenderWidth;
 	int m_RenderHeight;
 	int m_Step;
-	sf::Uint32 m_LastFrameTime;
-	std::thread *m_RenderThread;
 	bool m_ThreadIsRunning;
 
 public:

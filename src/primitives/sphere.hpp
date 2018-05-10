@@ -4,6 +4,7 @@
 #include <glm.hpp>
 #include "hitable.hpp"
 #include "hit-record.hpp"
+#include "materials/material.hpp"
 
 class Sphere : public Hitable
 {
@@ -13,7 +14,7 @@ private:
 	float m_Radius2;
 
 public:
-	Sphere(const glm::vec3 &center, float &radius);
+	Sphere(const glm::vec3 &center, float &radius, Material *material);
 	~Sphere();
 	bool Hit(const Ray &ray, const float &min, const float &max, HitRecord &record) override;
 };

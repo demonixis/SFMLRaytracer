@@ -1,5 +1,5 @@
-#ifndef LAMBERT_MATERIAL_HPP
-#define LAMBERT_MATERIAL_HPP
+#ifndef DIELETRIC_MATERIAL_HPP
+#define DIELETRIC_MATERIAL_HPP
 
 #include <glm.hpp>
 #include "utils/mathf.hpp"

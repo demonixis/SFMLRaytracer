@@ -8,10 +8,10 @@
 class Hitable
 {
 protected:
-	Material * m_Material;
+	Material *m_Material;
 
 public:
-	inline Material * GetMaterial() { return m_Material; }
+	inline Material *GetMaterial() { return m_Material; }
 	virtual bool Hit(const Ray &ray, const float &min, const float &max, HitRecord &record) = 0;
 };
 
