@@ -3,7 +3,7 @@
 
 #include <cstdlib>
 #include <glm.hpp>
-#include <SFML\Graphics\Color.hpp>
+#include <SFML/Graphics/Color.hpp>
 
 class Random
 {

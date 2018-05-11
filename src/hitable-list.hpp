@@ -14,7 +14,7 @@ private:
 public:
 	HitableList(const std::vector<Hitable*> &list);
 	~HitableList();
-	bool Hit(const Ray &ray, const float &min, const float &max, HitRecord &record) override;
+	bool Hit(const Ray &ray, float min, float max, HitRecord &record) override;
 };
 
 #endif

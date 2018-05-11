@@ -12,7 +12,7 @@ protected:
 
 public:
 	inline Material *GetMaterial() { return m_Material; }
-	virtual bool Hit(const Ray &ray, const float &min, const float &max, HitRecord &record) = 0;
+	virtual bool Hit(const Ray &ray, float min, float max, HitRecord &record) = 0;
 };
 
 #endif

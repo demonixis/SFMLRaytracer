@@ -18,7 +18,7 @@ private:
 	sf::Texture *m_Backbuffer;
 	sf::Uint8 *m_ColorBuffer;
 	sf::Clock *m_Stopwatch;
-	std::thread *m_RenderThread;
+	std::thread *m_RenderThread = nullptr;
 	sf::Uint32 m_LastFrameTime;
 	int m_RenderWidth;
 	int m_RenderHeight;
