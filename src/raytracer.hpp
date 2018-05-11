@@ -14,11 +14,11 @@
 class Raytracer
 {
 private:
-	sf::Sprite *m_BackbufferSprite;
-	sf::Texture *m_Backbuffer;
+	sf::Sprite m_BackbufferSprite;
+	sf::Texture m_Backbuffer;
 	sf::Uint8 *m_ColorBuffer;
-	sf::Clock *m_Stopwatch;
-	std::thread *m_RenderThread = nullptr;
+	sf::Clock m_Stopwatch;
+	std::thread m_RenderThread;
 	sf::Uint32 m_LastFrameTime;
 	int m_RenderWidth;
 	int m_RenderHeight;
@@ -33,10 +33,11 @@ public:
 	void SetStep(int value) { m_Step = value; }
 
 public:
+	Raytracer();
 	Raytracer(const int &width, const int &height, const float &scale);
 	~Raytracer();
-	void StartThreading(Camera &camera, Hitable &world);
-	void StopThreading();
+	void Start(Camera &camera, Hitable &world);
+	void Stop();
 	void Render(Camera &camera, Hitable &world);
 	void Present(sf::RenderWindow &window);
 

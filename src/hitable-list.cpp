@@ -1,5 +1,9 @@
 #include "hitable-list.hpp"
 
+HitableList::HitableList()
+{
+}
+
 HitableList::HitableList(const std::vector<Hitable*> &list)
 {
 	m_List = list;
@@ -13,8 +17,8 @@ HitableList::~HitableList()
 
 	m_List.clear();
 
-	if (m_Material != nullptr)
-		delete m_Material;
+	//if (m_Material != nullptr)
+		//delete m_Material;
 }
 
 bool HitableList::Hit(const Ray &ray, float min, float max, HitRecord &record)

@@ -19,13 +19,15 @@ private:
 
 public:
 	glm::vec3 Position() { return m_Origin; }
-
+	
 public:
 	Camera();
 	Camera(const glm::vec3 &origin, const glm::vec3 rotation, const glm::vec3 upVector, const float &fov, const float &aspect);
 	void GetRay(Ray &ray, const float &u, const float &v);
-	void Move(const float x, const float y, const float z);
+	void SetPosition(float x, float y, float z);
+	void Translate(const float x, const float y, const float z);
 	void Rotate(const float x, const float y, const float z);
+
 private:
 	void ComputeMatrix();
 };

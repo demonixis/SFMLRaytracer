@@ -19,6 +19,14 @@ project "SFMLRaytracer"
 		"src"
 	}
 	
+	if os.ishost("windows") then
+		links { "sfml-main" }
+	end
+	
+	if os.ishost("linux") then
+		linkoptions { "-pthread" }
+	end
+	
 	links { "sfml-audio", "sfml-graphics", "sfml-system", "sfml-window" }
 	
 	libdirs { "thirdparty/SFML/lib/" }
@@ -29,7 +37,6 @@ project "SFMLRaytracer"
 		symbols "on"
 
 		if os.ishost("linux") then
-			linkoptions { "-pthread" }
 			buildoptions { "-fmax-errors=3", "-Wall", "-Wextra" }
 		end
 		

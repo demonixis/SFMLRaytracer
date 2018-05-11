@@ -1,6 +1,6 @@
 #ifndef MATHF_HPP
 #define MATHF_HPP
-
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include <glm.hpp>
 #include "random.hpp"
@@ -8,6 +8,11 @@
 class Mathf
 {
 public:
+	static float Pi()
+	{
+		return 3.14159265358979323846f;
+	}
+
 	static float Length(const glm::vec3 &vec)
 	{
 		return std::sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);

@@ -18,6 +18,7 @@ public:
 	~Sphere();
 
 	bool Hit(const Ray &ray, float min, float max, HitRecord &record) override;
+	void UpdateSphereUV(HitRecord &record);
 };
 
 #endif

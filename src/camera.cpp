@@ -1,4 +1,3 @@
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include "camera.hpp"
 #include "utils/mathf.hpp"
@@ -9,7 +8,7 @@ Camera::Camera()
 	m_Rotation = glm::vec3(0);
 	m_LookAt = m_Origin + glm::vec3(0, 0, -1);
 	m_UpVector = glm::vec3(0, 1, 0);
-	m_FieldOfView = 75.0f * M_PI / 180.0f;
+	m_FieldOfView = 75.0f * Mathf::Pi() / 180.0f;
 	m_Aspect = float(640 / 480);
 	ComputeMatrix();
 }
@@ -30,7 +29,14 @@ void Camera::Camera::GetRay(Ray &ray, const float &u, const float &v)
 	ray.Set(m_Origin, m_LowerLeftCorner + u * m_Horizontal + v * m_Vertical - m_Origin);
 }
 
-void Camera::Move(const float x, const float y, const float z)
+void Camera::SetPosition(float x, float y, float z)
+{
+	m_Origin.x = x;
+	m_Origin.y = y;
+	m_Origin.z = z;
+}
+
+void Camera::Translate(const float x, const float y, const float z)
 {
 	m_Origin.x += x;
 	m_Origin.y += y;
@@ -50,7 +56,7 @@ void Camera::Rotate(const float x, const float y, const float z)
 
 void Camera::ComputeMatrix()
 {
-	float theta = m_FieldOfView * M_PI / 180.0f;
+	float theta = m_FieldOfView * Mathf::Pi() / 180.0f;
 	float halfHeight = tan(theta / 2.0f);
 	float halfWidth = m_Aspect * halfHeight;
 

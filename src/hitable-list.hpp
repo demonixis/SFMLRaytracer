@@ -12,6 +12,7 @@ private:
 	std::vector<Hitable*> m_List;
 
 public:
+	HitableList();
 	HitableList(const std::vector<Hitable*> &list);
 	~HitableList();
 	bool Hit(const Ray &ray, float min, float max, HitRecord &record) override;

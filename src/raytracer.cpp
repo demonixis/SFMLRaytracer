@@ -1,40 +1,30 @@
 #include "raytracer.hpp"
 
+Raytracer::Raytracer()
+{
+}
+
 Raytracer::Raytracer(const int &width, const int &height, const float &scale)
 {
 	m_RenderWidth = int(width * scale);
 	m_RenderHeight = int(height * scale);
 	m_ColorBuffer = new sf::Uint8[m_RenderWidth * m_RenderHeight * 4];
-	m_Backbuffer = new sf::Texture();
-	m_BackbufferSprite = new sf::Sprite();
-	m_BackbufferSprite->setTexture(*m_Backbuffer);
-	m_Stopwatch = new sf::Clock();
+	m_Backbuffer.create(m_RenderWidth, m_RenderHeight);
+	m_BackbufferSprite.setTexture(m_Backbuffer);
+	m_Step = 1;
 }
 
 Raytracer::~Raytracer()
 {
+	Stop();
 	delete m_ColorBuffer;
-	delete m_Backbuffer;
-	delete m_BackbufferSprite;
-	delete m_Stopwatch;
-
-	if (m_RenderThread != nullptr)
-	{
-		if (m_RenderThread->joinable())
-			m_RenderThread->join();
-
-		delete m_RenderThread;
-	}
 }
 
-void Raytracer::StartThreading(Camera &camera, Hitable &world)
+void Raytracer::Start(Camera &camera, Hitable &world)
 {
-	if (m_RenderThread != nullptr)
-	{
-		StopThreading();
-	}
+	Stop();
 
-	m_RenderThread = new std::thread([&] {
+	m_RenderThread = std::thread([&] {
 		m_ThreadIsRunning = true;
 
 		while (m_ThreadIsRunning)
@@ -42,12 +32,15 @@ void Raytracer::StartThreading(Camera &camera, Hitable &world)
 	});
 }
 
-void Raytracer::StopThreading()
+void Raytracer::Stop()
 {
+	if (!m_ThreadIsRunning)
+		return;
+
 	m_ThreadIsRunning = false;
-	m_RenderThread->join();
-	delete m_RenderThread;
-	m_RenderThread = nullptr;
+
+	if (m_RenderThread.joinable())
+		m_RenderThread.join();
 }
 
 glm::vec3 Raytracer::GetColor(const Ray &ray, Hitable &world)
@@ -92,14 +85,14 @@ glm::vec3 Raytracer::GetColor(const Ray &ray, Hitable &world)
 
 void Raytracer::Render(Camera &camera, Hitable &world)
 {
-	m_Stopwatch->restart();
+	m_Stopwatch.restart();
 
 	for (int j = 0; j < m_RenderHeight; j++)
 		for (int i = 0; i < m_RenderWidth; i++)
 			PixelShader(i, j, camera, world);
 
-	m_Backbuffer->update(m_ColorBuffer);
-	m_LastFrameTime = m_Stopwatch->getElapsedTime().asMilliseconds();
+	m_Backbuffer.update(m_ColorBuffer);
+	m_LastFrameTime = m_Stopwatch.getElapsedTime().asMilliseconds();
 }
 
 void Raytracer::PixelShader(const int &i, const int &j, Camera &camera, Hitable &world)
@@ -110,6 +103,7 @@ void Raytracer::PixelShader(const int &i, const int &j, Camera &camera, Hitable 
 
 	for (int s = 0; s < m_Step; s++)
 	{
+		auto ss = Random::Value();
 		float u = float((i + Random::Value()) / m_RenderWidth);
 		float v = float((j + Random::Value()) / m_RenderHeight);
 		camera.GetRay(ray, u, v);
@@ -127,5 +121,5 @@ void Raytracer::PixelShader(const int &i, const int &j, Camera &camera, Hitable 
 
 void Raytracer::Present(sf::RenderWindow &window)
 {
-	window.draw(*m_BackbufferSprite);
+	window.draw(m_BackbufferSprite);
 }
