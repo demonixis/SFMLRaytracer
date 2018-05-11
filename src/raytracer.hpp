@@ -34,7 +34,7 @@ public:
 
 public:
 	Raytracer();
-	Raytracer(const int &width, const int &height, const float &scale);
+	Raytracer(const int width, const int height, const float scale);
 	~Raytracer();
 	void Start(Camera &camera, Hitable &world);
 	void Stop();
@@ -43,7 +43,7 @@ public:
 
 private:
 	glm::vec3 GetColor(const Ray &ray, Hitable &world);
-	void PixelShader(const int &i, const int &j, Camera &camera, Hitable &world);
+	void PixelShader(const int i, const int j, Camera &camera, Hitable &world);
 };
 
 #endif

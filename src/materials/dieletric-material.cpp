@@ -1,6 +1,6 @@
 #include "dieletric-material.hpp"
 
-DieletricMaterial::DieletricMaterial(const float &refIdx)
+DieletricMaterial::DieletricMaterial(const float refIdx)
 {
 	m_RefIdx = refIdx;
 }

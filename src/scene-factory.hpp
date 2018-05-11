@@ -15,7 +15,7 @@
 class SceneFactory
 {
 public:
-	static void CreateSphereScene(std::vector<Hitable*> &scene, Camera &camera, int sceneComplexity)
+	static void CreateSphereScene(std::vector<Hitable*> &scene, Camera &camera, const int sceneComplexity)
 	{
 		scene.push_back(new Sphere(glm::vec3(0, -1000, 0), 1000.0f, new LambertMaterial(glm::vec3(0.6f, 0.2f, 0.7f))));
 

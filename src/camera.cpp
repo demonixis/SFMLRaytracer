@@ -13,7 +13,7 @@ Camera::Camera()
 	ComputeMatrix();
 }
 
-Camera::Camera(const glm::vec3 &origin, const glm::vec3 rotation, const glm::vec3 upVector, const float &fov, const float &aspect)
+Camera::Camera(const glm::vec3 &origin, const glm::vec3 rotation, const glm::vec3 upVector, const float fov, const float aspect)
 {
 	m_Origin = origin;
 	m_Rotation = rotation;
@@ -24,7 +24,7 @@ Camera::Camera(const glm::vec3 &origin, const glm::vec3 rotation, const glm::vec
 	ComputeMatrix();
 }
 
-void Camera::Camera::GetRay(Ray &ray, const float &u, const float &v)
+void Camera::Camera::GetRay(Ray &ray, const float u, const float v)
 {
 	ray.Set(m_Origin, m_LowerLeftCorner + u * m_Horizontal + v * m_Vertical - m_Origin);
 }

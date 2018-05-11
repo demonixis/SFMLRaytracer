@@ -1,6 +1,6 @@
 #include "metal-material.hpp"
 
-MetalMaterial::MetalMaterial(const glm::vec3 &albedo, const float &fuzz)
+MetalMaterial::MetalMaterial(const glm::vec3 &albedo, const float fuzz)
 {
 	m_Albedo = albedo;
 	m_Fuzz = fuzz;

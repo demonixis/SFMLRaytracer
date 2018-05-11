@@ -4,13 +4,15 @@ Raytracer::Raytracer()
 {
 }
 
-Raytracer::Raytracer(const int &width, const int &height, const float &scale)
+Raytracer::Raytracer(const int width, const int height, const float scale)
 {
 	m_RenderWidth = int(width * scale);
 	m_RenderHeight = int(height * scale);
 	m_ColorBuffer = new sf::Uint8[m_RenderWidth * m_RenderHeight * 4];
 	m_Backbuffer.create(m_RenderWidth, m_RenderHeight);
+	m_Backbuffer.setRepeated(false);
 	m_BackbufferSprite.setTexture(m_Backbuffer);
+	m_BackbufferSprite.setTextureRect(sf::IntRect(0, 0, m_RenderWidth, m_RenderHeight));
 	m_Step = 1;
 }
 
@@ -79,7 +81,7 @@ glm::vec3 Raytracer::GetColor(const Ray &ray, Hitable &world)
 
 	// Background color.
 	auto unitDirection = Mathf::UnitVector(ray.GetDirection());
-	float t = 0.5f * (unitDirection.y + 1.0f);
+	auto t = 0.5f * (unitDirection.y + 1.0f);
 	return (1.0f - t) * glm::vec3(1) + t * glm::vec3(0.5f, 0.7f, 1.0f);
 }
 
@@ -95,7 +97,7 @@ void Raytracer::Render(Camera &camera, Hitable &world)
 	m_LastFrameTime = m_Stopwatch.getElapsedTime().asMilliseconds();
 }
 
-void Raytracer::PixelShader(const int &i, const int &j, Camera &camera, Hitable &world)
+void Raytracer::PixelShader(const int i, const int j, Camera &camera, Hitable &world)
 {
 	glm::vec3 color(0);
 

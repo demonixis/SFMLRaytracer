@@ -13,7 +13,7 @@ private:
 	float m_Fuzz;
 
 public:
-	MetalMaterial(const glm::vec3 &albedo, const float &fuzz);
+	MetalMaterial(const glm::vec3 &albedo, const float fuzz);
 	inline glm::vec3 Albedo() { return m_Albedo; }
 	bool Scatter(const Ray &ray, HitRecord &record, glm::vec3 &attenuation, Ray &scattered) override;
 };

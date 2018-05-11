@@ -12,7 +12,7 @@ private:
 	float m_RefIdx;
 
 public:
-	DieletricMaterial(const float &refIdx);
+	DieletricMaterial(const float refIdx);
 	inline float RefIdx() { return m_RefIdx; }
 	bool Scatter(const Ray &ray, HitRecord &record, glm::vec3 &attenuation, Ray &scattered) override;
 };
