@@ -17,7 +17,7 @@ HitableList::~HitableList()
 		delete m_Material;
 }
 
-bool HitableList::Hit(const Ray &ray, const float &min, const float &max, HitRecord &record)
+bool HitableList::Hit(const Ray &ray, float min, float max, HitRecord &record)
 {
 	HitRecord tmp;
 	bool hitAnything = false;

@@ -1,6 +1,6 @@
 #include "sphere.hpp"
 
-Sphere::Sphere(const glm::vec3 &center, float &radius, Material *material)
+Sphere::Sphere(const glm::vec3 &center, float radius, Material *material)
 {
 	m_Center = center;
 	m_Radius = radius;
@@ -14,7 +14,7 @@ Sphere::~Sphere()
 		delete m_Material;
 }
 
-bool Sphere::Hit(const Ray &ray, const float &min, const float &max, HitRecord &record)
+bool Sphere::Hit(const Ray &ray, float min, float max, HitRecord &record)
 {
 	return false;
 }

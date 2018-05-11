@@ -31,10 +31,7 @@ void Raytracer::StartThreading(Camera &camera, Hitable &world)
 {
 	if (m_RenderThread != nullptr)
 	{
-		if (m_RenderThread->joinable())
-			m_RenderThread->join();
-
-		delete m_RenderThread;
+		StopThreading();
 	}
 
 	m_RenderThread = new std::thread([&] {
@@ -48,6 +45,9 @@ void Raytracer::StartThreading(Camera &camera, Hitable &world)
 void Raytracer::StopThreading()
 {
 	m_ThreadIsRunning = false;
+	m_RenderThread->join();
+	delete m_RenderThread;
+	m_RenderThread = nullptr;
 }
 
 glm::vec3 Raytracer::GetColor(const Ray &ray, Hitable &world)

@@ -10,7 +10,7 @@ class Mathf
 public:
 	static float Length(const glm::vec3 &vec)
 	{
-		return sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+		return std::sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 	}
 
 	static float LengthSquared(const glm::vec3 &vec)
@@ -72,7 +72,7 @@ public:
 
 		if (discriminant > 0)
 		{
-			refracted = niOverNt * (uv - n * dt) - n * sqrt(discriminant);
+			refracted = niOverNt * (uv - n * dt) - n * std::sqrt(discriminant);
 			return true;
 		}
 
