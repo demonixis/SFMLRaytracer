@@ -62,7 +62,7 @@ void Camera::ComputeMatrix()
 
 	auto w = Mathf::UnitVector(m_Origin - m_LookAt);
 	auto u = Mathf::UnitVector(glm::cross(m_UpVector, w));
-	auto v = glm::cross(w, u);
+	auto v = -glm::cross(w, u);
 
 	m_LowerLeftCorner.x = -halfWidth;
 	m_LowerLeftCorner.y = -halfHeight;
