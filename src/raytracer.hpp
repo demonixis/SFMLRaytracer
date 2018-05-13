@@ -30,7 +30,7 @@ public:
 	int RenderWidth() { return m_RenderWidth; }
 	int RenderHeight() { return m_RenderHeight; }
 	int Step() { return m_Step; }
-	void SetStep(int value) { m_Step = value; }
+	void SetStep(int value) { if (value > 0) m_Step = value; }
 
 public:
 	Raytracer();

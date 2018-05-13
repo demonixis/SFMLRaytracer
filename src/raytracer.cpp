@@ -12,7 +12,7 @@ Raytracer::Raytracer(const int width, const int height, const float scale)
 	m_Backbuffer.create(m_RenderWidth, m_RenderHeight);
 	m_Backbuffer.setRepeated(false);
 	m_BackbufferSprite.setTexture(m_Backbuffer);
-	m_BackbufferSprite.setTextureRect(sf::IntRect(0, 0, m_RenderWidth, m_RenderHeight));
+	m_BackbufferSprite.setScale(width / m_RenderWidth, height / m_RenderHeight);
 	m_Step = 1;
 }
 
@@ -105,7 +105,6 @@ void Raytracer::PixelShader(const int i, const int j, Camera &camera, Hitable &w
 
 	for (int s = 0; s < m_Step; s++)
 	{
-		auto ss = Random::Value();
 		float u = float((i + Random::Value()) / m_RenderWidth);
 		float v = float((j + Random::Value()) / m_RenderHeight);
 		camera.GetRay(ray, u, v);
@@ -115,10 +114,12 @@ void Raytracer::PixelShader(const int i, const int j, Camera &camera, Hitable &w
 	color /= (float)m_Step;
 	color = glm::sqrt(color);
 
-	m_ColorBuffer[i + j * m_RenderWidth] = sf::Uint8(color.x * 255);
-	m_ColorBuffer[i + j * m_RenderWidth + 1] = sf::Uint8(color.y * 255);
-	m_ColorBuffer[i + j * m_RenderWidth + 2] = sf::Uint8(color.z * 255);
-	m_ColorBuffer[i + j * m_RenderWidth + 3] = 255;
+	size_t pixelOffset = (j *m_RenderWidth + i) * 4;
+
+	m_ColorBuffer[pixelOffset] = sf::Uint8(color.x * 255);
+	m_ColorBuffer[pixelOffset + 1] = sf::Uint8(color.y * 255);
+	m_ColorBuffer[pixelOffset + 2] = sf::Uint8(color.z * 255);
+	m_ColorBuffer[pixelOffset + 3] = 255;
 }
 
 void Raytracer::Present(sf::RenderWindow &window)
