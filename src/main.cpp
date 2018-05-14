@@ -9,8 +9,8 @@
 
 int main(int argc, char* argv[])
 {
-	const int width = 1024;
-	const int height = 600;
+	const int width = 640;
+	const int height = 480;
 	bool realtime = true;
 	int samples = 1;
 
@@ -30,8 +30,12 @@ int main(int argc, char* argv[])
 	else
 		raytracer.Render(camera, world);
 
+	sf::Clock gameTime;
+
 	while (window.isOpen())
 	{
+		gameTime.restart();
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -40,42 +44,39 @@ int main(int argc, char* argv[])
 				raytracer.Stop();
 				window.close();
 			}
-
-			if (event.type == sf::Event::KeyPressed)
-			{
-				float moveSpeed = 0.25f;
-
-				if (event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Z)
-					camera.Translate(0, 0, -moveSpeed);
-				else if (event.key.code == sf::Keyboard::Down || event.key.code == sf::Keyboard::S)
-					camera.Translate(0, 0, moveSpeed);
-				else if (event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Q)
-					camera.Translate(-moveSpeed, 0, 0);
-				else if (event.key.code == sf::Keyboard::Right || event.key.code == sf::Keyboard::D)
-					camera.Translate(moveSpeed, 0, 0);
-
-				if (event.key.code == sf::Keyboard::PageUp)
-					raytracer.SetStep(raytracer.Step() + 1);
-
-				if (event.key.code == sf::Keyboard::PageDown)
-					raytracer.SetStep(raytracer.Step() - 1);
-
-				// Toggle Online/Offline
-				if (!realtime && event.key.code == sf::Keyboard::F11)
-				{
-					if (realtime)
-						raytracer.Stop();
-					else
-						raytracer.Start(camera, world);
-
-					realtime = !realtime;
-				}
-
-				// Offline
-				if (!realtime && event.key.code == sf::Keyboard::F12)
-					raytracer.Render(camera, world);
-			}
 		}
+
+		float moveSpeed = 0.0005f;
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+			camera.Translate(0, 0, -moveSpeed);
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			camera.Translate(0, 0, moveSpeed);
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+			camera.Translate(-moveSpeed, 0, 0);
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			camera.Translate(moveSpeed, 0, 0);
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::PageUp))
+			raytracer.SetStep(raytracer.Step() + 1);
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::PageDown))
+			raytracer.SetStep(raytracer.Step() - 1);
+
+		// Toggle Online/Offline
+		if (!realtime && sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
+		{
+			if (realtime)
+				raytracer.Stop();
+			else
+				raytracer.Start(camera, world);
+
+			realtime = !realtime;
+		}
+
+		// Offline
+		if (!realtime &&sf::Keyboard::isKeyPressed(sf::Keyboard::F12))
+			raytracer.Render(camera, world);
 
 		window.clear(sf::Color::Black);
 		raytracer.Present(window);
