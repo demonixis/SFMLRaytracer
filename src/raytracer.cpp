@@ -1,3 +1,4 @@
+#include <chrono>
 #include "raytracer.hpp"
 
 Raytracer::Raytracer()
@@ -12,25 +13,35 @@ Raytracer::Raytracer(const int width, const int height, const float scale)
 	m_Backbuffer.create(m_RenderWidth, m_RenderHeight);
 	m_Backbuffer.setRepeated(false);
 	m_BackbufferSprite.setTexture(m_Backbuffer);
-	m_BackbufferSprite.setScale(width / m_RenderWidth, height / m_RenderHeight);
+	m_BackbufferSprite.setScale(1 / scale, 1 / scale);
 	m_Step = 1;
+	m_ThreadSleepTime = 1;
+	m_ChunkCount = std::thread::hardware_concurrency();
+	m_SlicePixels = std::sqrt(m_ChunkCount);
+
+	for (int y = 0; y < m_SlicePixels; y++)
+		for (int x = 0; x < m_SlicePixels; x++)
+			m_SubRects.push_back(SubRect(x, y, m_RenderWidth, m_RenderHeight, m_SlicePixels));
 }
 
 Raytracer::~Raytracer()
 {
 	Stop();
-	delete m_ColorBuffer;
+	delete[] m_ColorBuffer;
 }
 
 void Raytracer::Start(Camera &camera, Hitable &world)
 {
 	Stop();
 
-	m_RenderThread = std::thread([&] {
+	m_ThreadPool[0] = std::thread([&] {
 		m_ThreadIsRunning = true;
 
 		while (m_ThreadIsRunning)
+		{
 			Render(camera, world);
+			std::this_thread::sleep_for(std::chrono::milliseconds(m_ThreadSleepTime));
+		}
 	});
 }
 
@@ -41,8 +52,32 @@ void Raytracer::Stop()
 
 	m_ThreadIsRunning = false;
 
-	if (m_RenderThread.joinable())
-		m_RenderThread.join();
+	for (int i = 0; i < m_ChunkCount; i++)
+		if (&m_ThreadPool[i] != nullptr)
+			if (m_ThreadPool[i].joinable())
+				m_ThreadPool[i].join();
+}
+
+void Raytracer::StartMT(Camera &camera, Hitable &world)
+{
+	Stop();
+
+	m_ThreadIsRunning = true;
+
+	for (int i = 0; i < m_ChunkCount; i++)
+		m_ThreadPool.push_back(std::thread(&Raytracer::StartRenderLoop, std::ref(camera), std::ref(world), i));
+}
+
+void Raytracer::StartRenderLoop(Camera &camera, Hitable &world, const int subRectIndex)
+{
+	m_ThreadPool[subRectIndex] = std::thread([&]
+	{
+		while (m_ThreadIsRunning)
+		{
+			RenderMT(camera, world, subRectIndex);
+			std::this_thread::sleep_for(std::chrono::milliseconds(m_ThreadSleepTime));
+		}
+	});
 }
 
 glm::vec3 Raytracer::GetColor(const Ray &ray, Hitable &world)
@@ -125,4 +160,69 @@ void Raytracer::PixelShader(const int i, const int j, Camera &camera, Hitable &w
 void Raytracer::Present(sf::RenderWindow &window)
 {
 	window.draw(m_BackbufferSprite);
+}
+
+void Raytracer::RenderMT(Camera &camera, Hitable &world, const int subRectIndex)
+{
+	auto rect = m_SubRects[subRectIndex];
+
+	while (rect.Done)
+		std::this_thread::sleep_for(std::chrono::milliseconds(m_ThreadSleepTime));
+
+	if (subRectIndex == 0)
+		m_Stopwatch.restart();
+
+	for (int j = 0; j < rect.Height; j++)
+		for (int i = 0; i < rect.Width; i++)
+			PixelShaderMT(i, j, camera, world, subRectIndex);
+
+	rect.Done = true;
+
+	if (subRectIndex == 0)
+		m_LastFrameTime = m_Stopwatch.getElapsedTime().asMilliseconds();
+}
+
+void Raytracer::PixelShaderMT(const int i, const int j, Camera &camera, Hitable &world, const int subRectIndex)
+{
+	auto rect = m_SubRects[subRectIndex];
+	glm::vec3 color(0);
+	int x = i + rect.X;
+	int y = j + rect.Y;
+	Ray ray;
+
+	for (int s = 0; s < m_Step; s++)
+	{
+		float u = float((x + Random::Value()) / m_RenderWidth);
+		float v = float((y + Random::Value()) / m_RenderHeight);
+		camera.GetRay(ray, u, v);
+		color += GetColor(ray, world);
+	}
+
+	color /= (float)m_Step;
+	color = glm::sqrt(color);
+
+	auto pixelOffset = (x + y * m_RenderWidth) * 4;
+	m_ColorBuffer[pixelOffset] = sf::Uint8(color.x * 255);
+	m_ColorBuffer[pixelOffset + 1] = sf::Uint8(color.y * 255);
+	m_ColorBuffer[pixelOffset + 2] = sf::Uint8(color.z * 255);
+	m_ColorBuffer[pixelOffset + 3] = 255;
+}
+
+void Raytracer::PresentMT(sf::RenderWindow &window)
+{
+	int count = 0;
+
+	for (int i = 0; i < m_ChunkCount; i++)
+		if (m_SubRects[i].Done)
+			count++;
+
+	bool flush = count == m_ChunkCount;
+	if (flush)
+		m_Backbuffer.update(m_Backbuffer);
+
+	window.draw(m_BackbufferSprite);
+
+	if (flush)
+		for (int i = 0; i < m_ChunkCount; i++)
+			m_SubRects[i].Done = false;
 }

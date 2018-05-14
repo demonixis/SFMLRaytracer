@@ -9,14 +9,15 @@
 
 int main(int argc, char* argv[])
 {
-	const int width = 1024;
-	const int height = 600;
+	const int width = 640;
+	const int height = 480;
 	bool realtime = true;
 	int samples = 1;
+	float scale = 0.75f;
 
 	sf::RenderWindow window(sf::VideoMode(width, height), "SFML Raytracer");
 
-	Raytracer raytracer(width, height, 1.0f);
+	Raytracer raytracer(width, height, scale);
 	raytracer.SetStep(samples);
 
 	Camera camera(glm::vec3(0, 0.5f, 3), glm::vec3(0), glm::vec3(0, 1, 0), 90.0f, float(width) / float(height));
@@ -26,7 +27,7 @@ int main(int argc, char* argv[])
 	HitableList world(scene);
 
 	if (realtime)
-		raytracer.Start(camera, world);
+		raytracer.StartMT(camera, world);
 	else
 		raytracer.Render(camera, world);
 
@@ -78,7 +79,7 @@ int main(int argc, char* argv[])
 		}
 
 		window.clear(sf::Color::Black);
-		raytracer.Present(window);
+		raytracer.PresentMT(window);
 		window.display();
 	}
 
