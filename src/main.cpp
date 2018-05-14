@@ -12,21 +12,23 @@ int main(int argc, char* argv[])
 	const int width = 640;
 	const int height = 480;
 	bool realtime = true;
-	int samples = 3;
+	int samples = 100;
 	int maxThreads = 16;
 	int sceneComplexity = 3;
-	float scale = 0.9f;
+	float scale = 0.75f;
 
 	sf::RenderWindow window(sf::VideoMode(width, height), "SFML Raytracer");
 
 	Raytracer raytracer(width, height, scale, maxThreads);
 	raytracer.SetStep(samples);
 
-	Camera camera(glm::vec3(0, 0.5f, 3), glm::vec3(0), glm::vec3(0, 1, 0), 90.0f, float(width) / float(height));
+	Camera camera(glm::vec3(1.5f, 0.45f, 2), glm::vec3(0), glm::vec3(0, 1, 0), 90.0f, float(width) / float(height));
 
 	auto scene = std::vector<Hitable*>();
 	SceneFactory::CreateSphereScene(scene, camera, sceneComplexity);
 	HitableList world(scene);
+
+	window.setKeyRepeatEnabled(false);
 
 	if (realtime)
 		raytracer.StartMT(camera, world);
@@ -34,18 +36,17 @@ int main(int argc, char* argv[])
 		raytracer.Render(camera, world);
 
 	sf::Clock gameTime;
+	sf::Event event;
 
 	while (window.isOpen())
 	{
 		gameTime.restart();
 
-		sf::Event event;
-
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape)
 			{
-				//raytracer.Stop();
+				raytracer.Stop();
 				window.close();
 			}
 
@@ -74,17 +75,23 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		float moveSpeed = 0.0005f;
+		float moveSpeed = 0.00025f;
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 			camera.Translate(0, 0, -moveSpeed);
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 			camera.Translate(0, 0, moveSpeed);
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
 			camera.Translate(-moveSpeed, 0, 0);
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 			camera.Translate(moveSpeed, 0, 0);
 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			camera.Translate(0, moveSpeed, 0);
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
+			camera.Translate(0, -moveSpeed, 0);
+		
 		window.clear(sf::Color::Black);
 		raytracer.PresentMT(window);
 		window.display();
