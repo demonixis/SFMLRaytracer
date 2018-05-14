@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 			raytracer.SetStep(raytracer.Step() - 1);
 
 		// Toggle Online/Offline
-		if (!realtime && sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::F11))
 		{
 			if (realtime)
 				raytracer.Stop();
