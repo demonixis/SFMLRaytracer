@@ -69,7 +69,7 @@ void Raytracer::StartMT(Camera &camera, HitableList &world)
 	m_ThreadIsRunning = true;
 
 	for (int i = 0; i < m_ChunkCount; i++)
-		m_ThreadPool.push_back(std::thread(&Raytracer::StartRenderLoop, this, camera, world, i));
+		m_ThreadPool.push_back(std::thread(&Raytracer::StartRenderLoop, this, std::ref(camera), std::ref(world), i));
 }
 
 void Raytracer::StartRenderLoop(Camera &camera, HitableList &world, const int subRectIndex)
