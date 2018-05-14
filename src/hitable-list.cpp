@@ -11,9 +11,9 @@ HitableList::HitableList(const std::vector<Hitable*> &list)
 
 HitableList::~HitableList()
 {
-	for (size_t i = 0; i < m_List.size(); i++)
+	/*for (size_t i = 0; i < m_List.size(); i++)
 		if (m_List[i] != nullptr)
-			delete m_List[i];
+			delete m_List[i];*/
 
 	m_List.clear();
 

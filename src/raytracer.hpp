@@ -57,17 +57,17 @@ public:
 
 public:
 	Raytracer();
-	Raytracer(const int width, const int height, const float scale);
+	Raytracer(const int width, const int height, const float scale, const int threadCount = 0);
 	~Raytracer();
 	void Start(Camera &camera, Hitable &world);
-	void StartMT(Camera &camera, Hitable &world);
+	void StartMT(Camera &camera, HitableList &world);
 	void Stop();
 	void Render(Camera &camera, Hitable &world);
 	void Present(sf::RenderWindow &window);
 	void PresentMT(sf::RenderWindow &window);
 
 private:
-	void StartRenderLoop(Camera &camera, Hitable &world, const int subRectIndex);
+	void StartRenderLoop(Camera &camera, HitableList &world, const int subRectIndex);
 	glm::vec3 GetColor(const Ray &ray, Hitable &world);
 	void PixelShader(const int i, const int j, Camera &camera, Hitable &world);
 	void RenderMT(Camera &camera, Hitable &world, const int subRectIndex);
