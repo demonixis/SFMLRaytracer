@@ -3,7 +3,7 @@ SFMLRaytracer
 
 ![Preview](https://github.com/demonixis/SFMLRaytracer/blob/master/images/preview.jpg)
 
-A work in progress realtime and offline raytracer written in C++ using SFML.
+A work in progress realtime and offline raytracer written in C++ using SFML. It supports multi-threading, the more CPU, the more fast is the render!
 
 ## Key binding
 | Key | Action |
@@ -30,7 +30,6 @@ Don't forget to copy runtime libraries (dll on windows) in the `build/[Debug|Rel
 ## Shortime Roadmap
 - Texture support
 - Boxes / Quad / Triangles
-- Multithreading
 
 ### Longtime Roadmap
 - BVH
