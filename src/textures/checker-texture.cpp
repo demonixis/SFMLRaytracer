@@ -1,7 +1,7 @@
 #include "checker-texture.hpp"
 #include <cmath>
 
-CheckerTexture::CheckerTexture(std::shared_ptr<Texture> oddTexture, std::shared_ptr<Texture> evenTexture)
+CheckerTexture::CheckerTexture(std::shared_ptr<Texture> &oddTexture, std::shared_ptr<Texture> &evenTexture)
 {
 	m_OddTexture = oddTexture;
 	m_EvenTexture = evenTexture;

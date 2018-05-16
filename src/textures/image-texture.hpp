@@ -13,8 +13,13 @@ private:
 	int m_Height;
 
 public:
+	ImageTexture(sf::Texture &texture);
+	ImageTexture(sf::Image &image);
 	ImageTexture(std::vector<sf::Uint8> &data, int width, int height);
 	glm::vec3 Value(const float u, const float v, const glm::vec3 &p) override;
+
+private:
+	void Setup(const sf::Uint8 *pixels, int width, int height);
 };
 
 #endif

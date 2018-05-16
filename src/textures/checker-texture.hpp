@@ -12,7 +12,7 @@ private:
 	std::shared_ptr<Texture> m_EvenTexture;
 
 public:
-	CheckerTexture(std::shared_ptr<Texture> oddTexture, std::shared_ptr<Texture> evenTexture);
+	CheckerTexture(std::shared_ptr<Texture> &oddTexture, std::shared_ptr<Texture> &evenTexture);
 	glm::vec3 Value(const float u, const float v, const glm::vec3 &p) override;
 };
 

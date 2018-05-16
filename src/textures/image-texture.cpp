@@ -1,8 +1,42 @@
 #include "image-texture.hpp"
 
+ImageTexture::ImageTexture(sf::Texture &texture)
+{
+	auto size = texture.getSize();
+	auto image = texture.copyToImage();
+	auto *pixels = image.getPixelsPtr();
+	Setup(pixels, size.x, size.y);
+}
+
+ImageTexture::ImageTexture(sf::Image &image)
+{
+	auto size = image.getSize();
+	auto *pixels = image.getPixelsPtr();
+	Setup(pixels, size.x, size.y);
+}
+
 ImageTexture::ImageTexture(std::vector<sf::Uint8> &data, int width, int height)
 {
 	m_Data = data;
+	m_Width = width;
+	m_Height = height;
+}
+
+void ImageTexture::Setup(const sf::Uint8 *pixels, int width, int height)
+{
+	if (m_Data.size() > 0)
+		m_Data.clear();
+
+	int size = width * height * 4;
+
+	// Take the 3 color components without alpha.
+	for (int i = 0; i < size; i += 4)
+	{
+		m_Data.push_back(pixels[i]);
+		m_Data.push_back(pixels[i + 1]);
+		m_Data.push_back(pixels[i + 2]);
+	}
+
 	m_Width = width;
 	m_Height = height;
 }
