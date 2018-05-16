@@ -3,13 +3,10 @@
 
 PerlinNoise::PerlinNoise()
 {
-	if (RanFloat.size() == 0)
-	{
-		PerlinGenerate(RanFloat);
-		PerlinGeneratePerm(PermX);
-		PerlinGeneratePerm(PermY);
-		PerlinGeneratePerm(PermZ);
-	}
+	PerlinGenerate(RanFloat);
+	PerlinGeneratePerm(PermX);
+	PerlinGeneratePerm(PermY);
+	PerlinGeneratePerm(PermZ);
 }
 
 float PerlinNoise::Noise(const glm::vec3 &p) const
@@ -19,10 +16,6 @@ float PerlinNoise::Noise(const glm::vec3 &p) const
 	int k = int(4 * p.z) & 255;
 	return RanFloat[PermX[i] ^ PermY[j] ^ PermZ[k]];
 }
-
-// ---
-// --- Static Methods
-// ---
 
 void PerlinNoise::Permute(std::vector<int> &arr)
 {

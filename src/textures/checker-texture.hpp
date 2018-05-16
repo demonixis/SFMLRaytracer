@@ -2,17 +2,16 @@
 #define CHECKER_TEXTURE_HPP
 
 #include <glm.hpp>
-#include <memory>
 #include "texture.hpp"
 
 class CheckerTexture : public Texture
 {
 private:
-	std::shared_ptr<Texture> m_OddTexture;
-	std::shared_ptr<Texture> m_EvenTexture;
+	glm::vec3 m_Odd;
+	glm::vec3 m_Even;
 
 public:
-	CheckerTexture(std::shared_ptr<Texture> &oddTexture, std::shared_ptr<Texture> &evenTexture);
+	CheckerTexture(const glm::vec3 &odd, const glm::vec3 &even);
 	glm::vec3 Value(const float u, const float v, const glm::vec3 &p) override;
 };
 

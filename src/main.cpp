@@ -12,10 +12,10 @@ int main(int argc, char* argv[])
 	const int width = 640;
 	const int height = 480;
 	bool realtime = true;
-	int samples = 1;
+	int samples = 5;
 	int maxThreads = 16;
 	int sceneComplexity = 1;
-	float scale = 0.5f;
+	float scale = 1.0f;
 
 	sf::RenderWindow window(sf::VideoMode(width, height), "SFML Raytracer");
 
