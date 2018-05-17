@@ -174,8 +174,15 @@ void Raytracer::RenderMT(Camera &camera, Hitable &world, const int subRectIndex)
 		m_Stopwatch.restart();
 
 	for (int j = 0; j < rect.Height; j++)
+	{
 		for (int i = 0; i < rect.Width; i++)
+		{
+			if (!m_ThreadIsRunning)
+				return;
+
 			PixelShaderMT(i, j, camera, world, subRectIndex);
+		}
+	}
 
 	rect.Done = true;
 

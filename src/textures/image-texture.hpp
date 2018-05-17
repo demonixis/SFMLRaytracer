@@ -1,9 +1,8 @@
 #ifndef IMAGE_TEXTURE_HPP
 #define IMAGE_TEXTURE_HPP
 
-#include <glm.hpp>
-#include <SFML/Graphics.hpp>
 #include "texture.hpp"
+#include <SFML/Graphics.hpp>
 
 class ImageTexture : public Texture
 {

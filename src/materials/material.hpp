@@ -1,7 +1,6 @@
 #ifndef MATERIAL_HPP
 #define MATERIAL_HPP
 
-#include <memory>
 #include <glm.hpp>
 #include "ray.hpp"
 #include "hit-record.hpp"
@@ -10,7 +9,7 @@
 class Material
 {
 protected:
-	std::shared_ptr<Texture> m_Texture;
+	Texture *m_Texture;
 	glm::vec3 m_Albedo;
 	bool m_TextureEnabled;
 

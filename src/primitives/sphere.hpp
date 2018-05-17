@@ -16,9 +16,10 @@ private:
 public:
 	Sphere(const glm::vec3 &center, float radius);
 	Sphere(const glm::vec3 &center, float radius, Material *material);
-	~Sphere();
-
 	bool Hit(const Ray &ray, float min, float max, HitRecord &record) override;
+
+private:
+	void UpdateRecord(const Ray &ray, HitRecord &record, const float distance);
 	void UpdateSphereUV(HitRecord &record);
 };
 

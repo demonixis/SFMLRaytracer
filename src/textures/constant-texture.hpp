@@ -1,9 +1,8 @@
 ﻿#ifndef CONSTANT_TEXTURE_HPP
 #define CONSTANT_TEXTURE_HPP
 
-#include <glm.hpp>
-#include <SFML/Graphics/Color.hpp>
 #include "texture.hpp"
+#include <SFML/Graphics/Color.hpp>
 
 class ConstantTexture : public Texture
 {

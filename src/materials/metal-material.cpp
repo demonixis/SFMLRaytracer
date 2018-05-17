@@ -1,17 +1,26 @@
 #include "metal-material.hpp"
+#include "utils/mathf.hpp"
 
 MetalMaterial::MetalMaterial(const glm::vec3 &albedo, const float fuzz)
 {
 	m_Albedo = albedo;
-	m_Fuzz = fuzz;
 	m_TextureEnabled = false;
+
+	if (fuzz < 1)
+		m_Fuzz = fuzz;
+	else
+		m_Fuzz = 1;
 }
 
-MetalMaterial::MetalMaterial(const std::shared_ptr<Texture> &texture, const float fuzz)
+MetalMaterial::MetalMaterial(Texture *texture, const float fuzz)
 {
 	m_Texture = texture;
-	m_Fuzz = fuzz;
 	m_TextureEnabled = true;
+
+	if (fuzz < 1)
+		m_Fuzz = fuzz;
+	else
+		m_Fuzz = 1;
 }
 
 bool MetalMaterial::Scatter(const Ray &ray, HitRecord &record, glm::vec3 &attenuation, Ray &scattered)

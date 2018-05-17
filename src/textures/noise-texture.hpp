@@ -1,7 +1,6 @@
 #ifndef NOISE_TEXTURE_HPP
 #define NOISE_TEXTURE_HPP
 
-#include <glm.hpp>
 #include "texture.hpp"
 #include "utils/perlin-noise.hpp"
 

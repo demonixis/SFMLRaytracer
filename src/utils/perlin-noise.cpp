@@ -17,9 +17,9 @@ float PerlinNoise::Noise(const glm::vec3 &p) const
 	return RanFloat[PermX[i] ^ PermY[j] ^ PermZ[k]];
 }
 
-void PerlinNoise::Permute(std::vector<int> &arr)
+void PerlinNoise::Permute(int *arr)
 {
-	for (int i = 0; i < arr.size(); i++)
+	for (int i = 0; i < 256; i++)
 	{
 		int target = int(Random::Value() * (i + 1));
 		int tmp = arr[i];
@@ -28,16 +28,16 @@ void PerlinNoise::Permute(std::vector<int> &arr)
 	}
 }
 
-void PerlinNoise::PerlinGenerate(std::vector<float> &arr)
+void PerlinNoise::PerlinGenerate(float *arr)
 {
 	for (int i = 0; i < 256; i++)
-		arr.push_back(Random::Value());
+		arr[i] = Random::Value();
 }
 
-void PerlinNoise::PerlinGeneratePerm(std::vector<int> &arr)
+void PerlinNoise::PerlinGeneratePerm(int *arr)
 {
 	for (int i = 0; i < 256; i++)
-		arr.push_back(i);
+		arr[i] = i;
 
 	Permute(arr);
 }

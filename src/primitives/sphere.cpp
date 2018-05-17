@@ -1,14 +1,6 @@
 #include "sphere.hpp"
 #include "utils/mathf.hpp"
 
-Sphere::Sphere(const glm::vec3 &center, float radius, Material *material)
-{
-	m_Center = center;
-	m_Radius = radius;
-	m_Radius2 = radius * radius;
-	m_Material = material;
-}
-
 Sphere::Sphere(const glm::vec3 &center, float radius)
 {
 	m_Center = center;
@@ -16,10 +8,12 @@ Sphere::Sphere(const glm::vec3 &center, float radius)
 	m_Radius2 = radius * radius;
 }
 
-Sphere::~Sphere()
+Sphere::Sphere(const glm::vec3 &center, float radius, Material *material)
 {
-	if (m_Material != nullptr)
-		delete m_Material;
+	m_Center = center;
+	m_Radius = radius;
+	m_Radius2 = radius * radius;
+	m_Material = material;
 }
 
 bool Sphere::Hit(const Ray &ray, float min, float max, HitRecord &record)
@@ -38,13 +32,7 @@ bool Sphere::Hit(const Ray &ray, float min, float max, HitRecord &record)
 
 		if (temp < max && temp > min)
 		{
-			record.T = temp;
-			record.P = ray.PointAtParameter(record.T);
-			record.Normal = (record.P - m_Center) / m_Radius;
-			record.TargetMaterial = m_Material;
-
-			UpdateSphereUV(record);
-
+			UpdateRecord(ray, record, temp);
 			return true;
 		}
 
@@ -52,18 +40,21 @@ bool Sphere::Hit(const Ray &ray, float min, float max, HitRecord &record)
 
 		if (temp < max && temp > min)
 		{
-			record.T = temp;
-			record.P = ray.PointAtParameter(record.T);
-			record.Normal = (record.P - m_Center) / m_Radius;
-			record.TargetMaterial = m_Material;
-
-			UpdateSphereUV(record);
-
+			UpdateRecord(ray, record, temp);
 			return true;
 		}
 	}
 
 	return false;
+}
+
+void Sphere::UpdateRecord(const Ray &ray, HitRecord &record, const float distance)
+{
+	record.T = distance;
+	record.P = ray.PointAtParameter(record.T);
+	record.Normal = (record.P - m_Center) / m_Radius;
+	record.TargetMaterial = m_Material;
+	UpdateSphereUV(record);
 }
 
 void Sphere::UpdateSphereUV(HitRecord &record)

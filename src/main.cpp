@@ -9,12 +9,12 @@
 
 int main(int argc, char* argv[])
 {
-	const int width = 640;
-	const int height = 480;
+	const int width = 1280;
+	const int height = 800;
 	bool realtime = true;
-	int samples = 1;
+	int samples = 5;
 	int maxThreads = 16;
-	int sceneComplexity = 3;
+	int sceneComplexity = 5;
 	float scale = 1.0f;
 
 	sf::RenderWindow window(sf::VideoMode(width, height), "SFML Raytracer");
@@ -22,10 +22,13 @@ int main(int argc, char* argv[])
 	Raytracer raytracer(width, height, scale, maxThreads);
 	raytracer.SetStep(samples);
 
-	Camera camera(glm::vec3(1.5f, 0.45f, 2), glm::vec3(0), glm::vec3(0, 1, 0), 90.0f, float(width) / float(height));
+	Camera camera(glm::vec3(1.5f, 0.45f, 4), glm::vec3(0), glm::vec3(0, 1, 0), 90.0f, float(width) / float(height));
+
+	std::vector<Texture*> textures;
+	std::vector<Material*> materials;
 
 	auto scene = std::vector<Hitable*>();
-	SceneFactory::CreateSphereScene(scene, camera, sceneComplexity);
+	SceneFactory::CreateSphereScene(scene, textures, materials, camera, sceneComplexity);
 	HitableList world(scene);
 
 	window.setKeyRepeatEnabled(false);
@@ -47,6 +50,13 @@ int main(int argc, char* argv[])
 			if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape)
 			{
 				raytracer.Stop();
+			
+				for (int i = 0; i < materials.size(); i++)
+					delete materials[i];
+				
+				for (int i = 0; i < textures.size(); i++)
+					delete textures[i];
+
 				window.close();
 			}
 

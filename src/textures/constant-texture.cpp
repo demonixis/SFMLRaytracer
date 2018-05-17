@@ -2,7 +2,9 @@
 
 ConstantTexture::ConstantTexture(const glm::vec3 &color)
 {
-	m_Color = color;
+	m_Color.x = color.x;
+	m_Color.y = color.y;
+	m_Color.z = color.z;
 }
 
 ConstantTexture::ConstantTexture(const sf::Color &color)

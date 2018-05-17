@@ -7,19 +7,19 @@
 class PerlinNoise
 {
 private:
-	std::vector<float> RanFloat;
-	std::vector<int> PermX;
-	std::vector<int> PermY;
-	std::vector<int> PermZ;
+	float RanFloat[256];
+	int PermX[256];
+	int PermY[256];
+	int PermZ[256];
 
 public:
 	PerlinNoise();
 	float Noise(const glm::vec3 &p) const;
 
 private:
-	void Permute(std::vector<int> &arr);
-	void PerlinGenerate(std::vector<float> &arr);
-	void PerlinGeneratePerm(std::vector<int> &arr);
+	void Permute(int *arr);
+	void PerlinGenerate(float *arr);
+	void PerlinGeneratePerm(int *arr);
 };
 
 #endif

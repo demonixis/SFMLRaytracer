@@ -1,7 +1,6 @@
 #ifndef CHECKER_TEXTURE_HPP
 #define CHECKER_TEXTURE_HPP
 
-#include <glm.hpp>
 #include "texture.hpp"
 
 class CheckerTexture : public Texture

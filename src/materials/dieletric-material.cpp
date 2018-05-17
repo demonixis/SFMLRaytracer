@@ -1,20 +1,14 @@
 #include "dieletric-material.hpp"
+#include "utils/mathf.hpp"
 
-DieletricMaterial::DieletricMaterial(const float refIdx)
-{
-	m_Albedo = glm::vec3(1.0f, 1.0f, 0.0f);
-	m_RefIdx = refIdx;
-	m_TextureEnabled = false;
-}
-
-DieletricMaterial::DieletricMaterial(const glm::vec3 &albedo, const float refIdx)
+DieletricMaterial::DieletricMaterial(const float refIdx, const glm::vec3 &albedo)
 {
 	m_Albedo = albedo;
 	m_RefIdx = refIdx;
 	m_TextureEnabled = false;
 }
 
-DieletricMaterial::DieletricMaterial(const std::shared_ptr<Texture> &texture, const float refIdx)
+DieletricMaterial::DieletricMaterial(Texture *texture, const float refIdx)
 {
 	m_RefIdx = refIdx;
 	m_Texture = texture;

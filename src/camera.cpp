@@ -1,5 +1,5 @@
-#include <cmath>
 #include "camera.hpp"
+#include <cmath>
 #include "utils/mathf.hpp"
 
 Camera::Camera()
