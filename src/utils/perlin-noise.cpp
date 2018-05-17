@@ -30,14 +30,14 @@ void PerlinNoise::Permute(std::vector<int> &arr)
 
 void PerlinNoise::PerlinGenerate(std::vector<float> &arr)
 {
-	for (int i = 0; i < arr.size(); i++)
-		arr[i] = Random::Value();
+	for (int i = 0; i < 256; i++)
+		arr.push_back(Random::Value());
 }
 
 void PerlinNoise::PerlinGeneratePerm(std::vector<int> &arr)
 {
-	for (int i = 0; i < arr.size(); i++)
-		arr[i] = i;
+	for (int i = 0; i < 256; i++)
+		arr.push_back(i);
 
 	Permute(arr);
 }

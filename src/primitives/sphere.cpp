@@ -9,6 +9,13 @@ Sphere::Sphere(const glm::vec3 &center, float radius, Material *material)
 	m_Material = material;
 }
 
+Sphere::Sphere(const glm::vec3 &center, float radius)
+{
+	m_Center = center;
+	m_Radius = radius;
+	m_Radius2 = radius * radius;
+}
+
 Sphere::~Sphere()
 {
 	if (m_Material != nullptr)

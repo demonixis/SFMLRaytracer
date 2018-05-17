@@ -2,6 +2,14 @@
 
 DieletricMaterial::DieletricMaterial(const float refIdx)
 {
+	m_Albedo = glm::vec3(1.0f, 1.0f, 0.0f);
+	m_RefIdx = refIdx;
+	m_TextureEnabled = false;
+}
+
+DieletricMaterial::DieletricMaterial(const glm::vec3 &albedo, const float refIdx)
+{
+	m_Albedo = albedo;
 	m_RefIdx = refIdx;
 	m_TextureEnabled = false;
 }
@@ -20,7 +28,7 @@ bool DieletricMaterial::Scatter(const Ray &ray, HitRecord &record, glm::vec3 &at
 	auto reflected = glm::reflect(rayDirection, record.Normal);
 	float niOverNt = 0.0f;
 
-	attenuation = m_TextureEnabled ? m_Texture->Value(record.U, record.V, record.P) : glm::vec3(1.0f, 1.0f, 0.0f);
+	attenuation = m_TextureEnabled ? m_Texture->Value(record.U, record.V, record.P) : m_Albedo;
 	glm::vec3 refracted(0);
 	float reflectProbe = 0.0f;
 	float cosine = 0.0f;

@@ -11,6 +11,7 @@ protected:
 	Material *m_Material;
 
 public:
+	inline void SetMaterial(Material *material) { m_Material = material; }
 	inline Material *GetMaterial() { return m_Material; }
 	virtual bool Hit(const Ray &ray, float min, float max, HitRecord &record) = 0;
 };

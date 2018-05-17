@@ -4,12 +4,22 @@ LambertMaterial::LambertMaterial(const glm::vec3 &albedo)
 {
 	m_Albedo = albedo;
 	m_TextureEnabled = false;
+	m_EmissiveEnabled = false;
 }
 
 LambertMaterial::LambertMaterial(const std::shared_ptr<Texture> &texture)
 {
 	m_Texture = texture;
 	m_TextureEnabled = true;
+	m_EmissiveEnabled = false;
+}
+
+LambertMaterial::LambertMaterial(const std::shared_ptr<Texture> &texture, const std::shared_ptr<Texture> &illum)
+{
+	m_Texture = texture;
+	m_EmissiveTexture = illum;
+	m_TextureEnabled = true;
+	m_EmissiveEnabled = true;
 }
 
 bool LambertMaterial::Scatter(const Ray &ray, HitRecord &record, glm::vec3 &attenuation, Ray &scattered)
@@ -22,3 +32,8 @@ bool LambertMaterial::Scatter(const Ray &ray, HitRecord &record, glm::vec3 &atte
 
 	return true;
 }
+/*
+glm::vec3 LambertMaterial::Emitted(HitRecord &record)
+{
+	return m_EmissiveEnabled ? m_EmissiveTexture->Value(record.U, record.V, record.P) : glm::vec3(0);
+}*/

@@ -14,6 +14,7 @@ private:
 	float m_Radius2;
 
 public:
+	Sphere(const glm::vec3 &center, float radius);
 	Sphere(const glm::vec3 &center, float radius, Material *material);
 	~Sphere();
 
